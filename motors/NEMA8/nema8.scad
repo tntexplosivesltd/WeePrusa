@@ -40,23 +40,34 @@ difference()
 {
 	union()
 	{
-		color (black) cube ([width, length, width], center = true);
+		color (black) cube ([width, length, width], center = false);
 		color (grey)
 		{
-			translate ([0, -length/2, 0]) rotate ([90,0,0]) cylinder (h = hub_width*2, r1 = hub_radius, r2 = hub_radius, center = true);
-			translate ([0, -length/2, 0]) rotate ([90,0,0]) cylinder (h = shaft*2, r1 = shaft_radius, r2 = shaft_radius, center = true);
+			translate ([width/2, 0, width/2])
+			{
+				rotate ([90,0,0]) cylinder (h = hub_width, r1 = hub_radius, r2 = hub_radius, center = false);
+				rotate ([90,0,0]) cylinder (h = shaft, r1 = shaft_radius, r2 = shaft_radius, center = false);
+			}
 		}
 	}
 	
 	color (grey)
 	{
-		// screw holes
-		translate ([screw_separation/2, -length/2, screw_separation/2]) rotate ([90,0,0]) cylinder (h = screw_depth*2, r1 = screw_size/2, r2 = screw_size/2, center = true);
-		translate ([-screw_separation/2, -length/2, screw_separation/2]) rotate ([90,0,0]) cylinder (h = screw_depth*2, r1 = screw_size/2, r2 = screw_size/2, center = true);
-		translate ([screw_separation/2, -length/2, -screw_separation/2]) rotate ([90,0,0]) cylinder (h = screw_depth*2, r1 = screw_size/2, r2 = screw_size/2, center = true);
-		translate ([-screw_separation/2, -length/2, -screw_separation/2]) rotate ([90,0,0]) cylinder (h = screw_depth*2, r1 = screw_size/2, r2 = screw_size/2, center = true);
+		translate([width/2, screw_depth, width/2])
+		{
+			// screw holes
+			translate ([screw_separation/2, 0, screw_separation/2]) rotate ([90,0,0])
+				cylinder (h = screw_depth+1, r1 = screw_size/2, r2 = screw_size/2, center = false);
+			translate ([-screw_separation/2, 0, screw_separation/2]) rotate ([90,0,0])
+				cylinder (h = screw_depth+1, r1 = screw_size/2, r2 = screw_size/2, center = false);
+			translate ([screw_separation/2, 0, -screw_separation/2]) rotate ([90,0,0])
+				cylinder (h = screw_depth+1, r1 = screw_size/2, r2 = screw_size/2, center = false);
+			translate ([-screw_separation/2, 0, -screw_separation/2]) rotate ([90,0,0])
+				cylinder (h = screw_depth+1, r1 = screw_size/2, r2 = screw_size/2, center = false);
 
-		// flat on shaft
-		translate ([0, -length/2 - shaft, shaft_radius]) rotate ([90,0,0]) cube ([5, 0.5, keyway*2], center = true);
+			// flat on shaft
+			rotate ([90,0,0]) translate ([-shaft_radius, shaft_radius-0.5, shaft+screw_depth-keyway]) 
+				cube ([5, 0.5, keyway+1], center = false);
+		}
 	}
 }
