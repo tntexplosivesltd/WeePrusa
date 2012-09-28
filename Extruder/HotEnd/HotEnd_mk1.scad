@@ -74,7 +74,7 @@ union()
 			color(nozzle)
 			{
 				// resistor slot for a 12mm x 5.5mm 6.8ohm +-0.02r
-				rotate([90,0,0])translate([-7,5,-8])cylinder(h = 16, r = res_width/2, $fn=100);
+				rotate([90,0,0])translate([-7,5,-11.25])cylinder(h = 22.5, r = res_width/2, $fn=100);
 			
 				// Thermistor Hole (Epcos#B57560G0145) 2.3mm +-0.2r
 				rotate([90,0,0])translate([7,5,7-therm_depth])cylinder(h = therm_depth+1, r = therm_width/2, $fn=100);

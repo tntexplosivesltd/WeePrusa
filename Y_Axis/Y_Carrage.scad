@@ -12,19 +12,22 @@
 // Peramiters:
 
 // Top Plate Options
-Top_Plate_Size = 60;
-Top_Plate_Thikness = 4;
+Top_Plate_Size = 60;		//70mm bed needed for lm6uu
+Top_Plate_Thikness = 5;
 
 //Print Table Mounting Holes
 Hole_Size = 2.25;
-Hole_FromEdge = 12;
+Hole_FromEdge = 6.125;
 
 // Barring Holder dimetions
-LM8_Lingth = 25;
-LM8_Diamiter = 16;
-LM8_Holder_Lingth = 30;
-LM8_Holder_Hieght = 15;
-LM8_Holder_Width =  22;
+LM6 = false;     // change to true for LM6UU bearings You will still need to change the dimetions below to mach lm6uu not lm8uu
+LM6_Clr = 8;  // room top and bottom of the 4 mounts.
+
+LM8_Lingth = 25;			//lm6uu = 19mm
+LM8_Diamiter = 16;			//lm6uu = 12mm
+LM8_Holder_Lingth = 30;	//lm6uu = 25mm
+LM8_Holder_Hieght = 15;	//lm6uu = no change
+LM8_Holder_Width =  22;	//lm6uu = 16mm
 LM8_Holder_X = 18; //distance from center
 
 // Rod size
@@ -32,7 +35,7 @@ Rod_Size = 8;
 
 //some options
 ZipTie = true;
-Fingers = true;
+Fingers =true;
 
 module BarringHolder (X, Y, Z)
 	{
@@ -40,7 +43,8 @@ module BarringHolder (X, Y, Z)
 		{
 			difference()
 			{
-				cube(size = [ LM8_Holder_Lingth , LM8_Holder_Width , LM8_Holder_Hieght ], center = true);
+				if (!Fingers) translate([0, 0, -4])cube(size = [ LM8_Holder_Lingth , LM8_Holder_Width , LM8_Holder_Hieght ], center = true);
+				else cube(size = [ LM8_Holder_Lingth , LM8_Holder_Width , LM8_Holder_Hieght ], center = true);
 				rotate([0,90,0]) translate([-(LM8_Holder_Hieght*0.25),0,0]) cylinder (h = LM8_Lingth, r = (LM8_Diamiter/2), center = true );
 				rotate([0,90,0]) translate([-(LM8_Holder_Hieght*0.25),0,0]) cylinder (h = LM8_Holder_Lingth+0.2, r = (Rod_Size/2+2), center = true );
 				
@@ -75,15 +79,39 @@ module HolePunch()
 			}
 	}
 
+module BeltHoles()
+	{
+		for (i = [ [ (Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
+				   [ -(Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
+				   [ (Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0],
+				   [ -(Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0] ])
+			{
+  		  	translate(i)
+			cylinder(h = Top_Plate_Thikness+0.2, r = Hole_Size/2, center = true, $fn = 100);
+			}
+	}
+
 union()
 	{
 		difference()
 		{
 			cube(size = [Top_Plate_Size ,Top_Plate_Size,Top_Plate_Thikness], center = true); //top plate
-			#HolePunch();
+			HolePunch();
+			BeltHoles();
 		}
-		BarringHolder(0,LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
-		BarringHolder(0,-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+		if(LM6)
+		{
+			BarringHolder((Top_Plate_Size/2-LM8_Holder_Lingth/2-LM6_Clr),LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BarringHolder((-Top_Plate_Size/2+LM8_Holder_Lingth/2+LM6_Clr),LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BarringHolder((Top_Plate_Size/2-LM8_Holder_Lingth/2-LM6_Clr),-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BarringHolder((-Top_Plate_Size/2+LM8_Holder_Lingth/2+LM6_Clr),-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+		}
+		
+		else 
+		{
+			BarringHolder(0,LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BarringHolder(0,-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+		}
 	}
 
 
