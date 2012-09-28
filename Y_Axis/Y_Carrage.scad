@@ -3,116 +3,122 @@
 // GNU GPL v3
 //
 // Maxumx (maxumx2002@yahoo.com)
+// Thomas Phillips (tntexplosivesltd@gmail.com)
+//
+// https://github.com/tntexplosivesltd/WeePrusa
 //
 // Y - axis carrage base
-//
 // Material: ABS, PLA(recomended)
 ////////////////////////////////////////////////////////////////
 
-// Peramiters:
+$fn = 32;
+// Parameters:
 
 // Top Plate Options
-Top_Plate_Size = 60;		//70mm bed needed for lm6uu
-Top_Plate_Thikness = 5;
+Top_Plate_Size = 70;		//70mm bed needed for lm6uu
+Top_Plate_Thickness = 4;
 
 //Print Table Mounting Holes
 Hole_Size = 2.25;
-Hole_FromEdge = 6.125;
+Hole_FromEdge = 5;
 
-// Barring Holder dimetions
-LM6 = false;     // change to true for LM6UU bearings You will still need to change the dimetions below to mach lm6uu not lm8uu
-LM6_Clr = 8;  // room top and bottom of the 4 mounts.
+// Bearing Holder dimesions
+LM6 = false;     // change to true for LM6UU bearings.
+LM6_Clr = 5;  // room top and bottom of the 4 mounts.
 
-LM8_Lingth = 25;			//lm6uu = 19mm
-LM8_Diamiter = 16;			//lm6uu = 12mm
-LM8_Holder_Lingth = 30;	//lm6uu = 25mm
-LM8_Holder_Hieght = 15;	//lm6uu = no change
-LM8_Holder_Width =  22;	//lm6uu = 16mm
-LM8_Holder_X = 18; //distance from center
-
-// Rod size
-Rod_Size = 8; 
+Holder_X = 18;
 
 //some options
 ZipTie = true;
-Fingers =true;
+Fingers = false;
 
-module BarringHolder (X, Y, Z)
-	{
-		translate([X,Y,Z])
-		{
-			difference()
-			{
-				if (!Fingers) translate([0, 0, -4])cube(size = [ LM8_Holder_Lingth , LM8_Holder_Width , LM8_Holder_Hieght ], center = true);
-				else cube(size = [ LM8_Holder_Lingth , LM8_Holder_Width , LM8_Holder_Hieght ], center = true);
-				rotate([0,90,0]) translate([-(LM8_Holder_Hieght*0.25),0,0]) cylinder (h = LM8_Lingth, r = (LM8_Diamiter/2), center = true );
-				rotate([0,90,0]) translate([-(LM8_Holder_Hieght*0.25),0,0]) cylinder (h = LM8_Holder_Lingth+0.2, r = (Rod_Size/2+2), center = true );
-				
-				if (ZipTie)
-				{
-					translate([(LM8_Holder_Lingth*0.33),0,-(LM8_Holder_Hieght/2-1)])cube(size =[4,(LM8_Holder_Width+0.1),2], center = true); //ziptie tubes
-					translate([-(LM8_Holder_Lingth*0.33),0,-(LM8_Holder_Hieght/2-1)])cube(size =[4,(LM8_Holder_Width+0.1),2], center = true); //ziptie tubes
-				}
-				if (Fingers)
-				{
-					translate([(LM8_Holder_Lingth*0.33),0,(LM8_Holder_Hieght/2-(LM8_Holder_Hieght/4-0.1))])
-							cube(size =[4,(LM8_Holder_Width+0.1),(LM8_Holder_Hieght/2)], center = true); //side finger one
-					translate([-(LM8_Holder_Lingth*0.33),0,(LM8_Holder_Hieght/2-(LM8_Holder_Hieght/4-0.1))])
-							cube(size =[4,(LM8_Holder_Width+0.1),(LM8_Holder_Hieght/2)], center = true); //side finger two
-					translate([0,0,(LM8_Holder_Hieght/2-(LM8_Holder_Hieght/4-0.1))])
-							cube(size =[4,(LM8_Holder_Width+0.1),(LM8_Holder_Hieght/2)], center = true); //Middle finger
-				}
-			}
-		}
-	
-	}
 
-module HolePunch()
-	{
-		for (i = [ [ (Top_Plate_Size/2-Hole_FromEdge),(Top_Plate_Size/2-Hole_FromEdge),0],
-				  [ -(Top_Plate_Size/2-Hole_FromEdge),(Top_Plate_Size/2-Hole_FromEdge), 0],
-				  [ (Top_Plate_Size/2-Hole_FromEdge),-(Top_Plate_Size/2-Hole_FromEdge), 0],
-				  [ -(Top_Plate_Size/2-Hole_FromEdge),-(Top_Plate_Size/2-Hole_FromEdge), 0] ])
-			{
-  		  	translate(i)
-			cylinder(h = Top_Plate_Thikness+0.2, r = Hole_Size/2, center = true, $fn = 100);
-			}
-	}
+// Main Call
+color("royalblue")
+{
+	if (LM6) carriage(19, 12, 25, 16, 15, 6);
+	else carriage(25, 16, 30, 22, 15, 8);
+}
 
-module BeltHoles()
-	{
-		for (i = [ [ (Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
-				   [ -(Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
-				   [ (Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0],
-				   [ -(Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0] ])
-			{
-  		  	translate(i)
-			cylinder(h = Top_Plate_Thikness+0.2, r = Hole_Size/2, center = true, $fn = 100);
-			}
-	}
 
-union()
+
+module BearingHolder (X, Y, Z, bearing_length, bearing_diameter, holder_length, holder_width, holder_height, Rod_Size)
+{
+	echo("YAY",X, Y, Z, bearing_length, bearing_diameter, holder_length, holder_width, holder_height);
+	translate([X,Y,Z])
 	{
 		difference()
 		{
-			cube(size = [Top_Plate_Size ,Top_Plate_Size,Top_Plate_Thikness], center = true); //top plate
-			HolePunch();
+			if (!Fingers) translate([0, 0, -4])cube(size = [ holder_length, holder_width, holder_height ], center = true);
+			else cube(size = [ holder_length, holder_width, holder_height ], center = true);
+			rotate([0,90,0]) translate([-(holder_height*0.25),0,0]) cylinder (h = bearing_length+1, r = (bearing_diameter/2+0.2), center = true );
+			rotate([0,90,0]) translate([-(holder_height*0.25),0,0]) cylinder (h = holder_length+0.2, r = (Rod_Size/2+2), center = true );
+			
+			if (ZipTie)
+			{
+				translate([0,0,-(holder_height/2-1-0.1)])cube(size =[4,(holder_width+0.1),2], center = true); 		//ziptie tube
+			}
+			if (Fingers)
+			{
+				translate([(holder_length*0.33),0,(holder_height/2-(holder_height/4-0.1))])
+					cube(size =[4,(holder_width+0.1),(holder_height/2)], center = true); 		//side finger one
+				translate([-(holder_length*0.33),0,(holder_height/2-(holder_height/4-0.1))])
+					cube(size =[4,(holder_width+0.1),(holder_height/2)], center = true); 		//side finger two
+				translate([0,0,(holder_height/2-(holder_height/4-0.1))])
+					cube(size =[4,(holder_width+0.1),(holder_height/2)], center = true); 		//Middle finger
+			}
+		}
+	}
+}
+
+module BedHoles()
+{
+	for (i = [ [ (Top_Plate_Size/2-Hole_FromEdge),(Top_Plate_Size/2-Hole_FromEdge),0],
+			  [ -(Top_Plate_Size/2-Hole_FromEdge),(Top_Plate_Size/2-Hole_FromEdge), 0],
+			  [ (Top_Plate_Size/2-Hole_FromEdge),-(Top_Plate_Size/2-Hole_FromEdge), 0],
+			  [ -(Top_Plate_Size/2-Hole_FromEdge),-(Top_Plate_Size/2-Hole_FromEdge), 0] ])
+	{
+	  	translate(i)
+		cylinder(h = Top_Plate_Thickness+0.2, r = Hole_Size/2, center = true, $fn = 100);
+	}
+}
+
+module BeltHoles()
+{
+	for (i = [ [ (Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
+			  [ -(Top_Plate_Size/2-5-(Hole_Size/2)),5.5,0],
+			  [ (Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0],
+			  [ -(Top_Plate_Size/2-5-(Hole_Size/2)),-5.5,0] ])
+	{
+	  	translate(i)
+		cylinder(h = Top_Plate_Thickness+0.2, r = Hole_Size/2, center = true, $fn = 100);
+	}
+}
+
+module carriage(b_length, b_dia, h_length, h_width, h_height, rod)
+{
+	union()
+	{
+		difference()
+		{
+			cube(size = [Top_Plate_Size, Top_Plate_Size, Top_Plate_Thickness], center = true); 			//top plate
+			BedHoles();
 			BeltHoles();
 		}
 		if(LM6)
 		{
-			BarringHolder((Top_Plate_Size/2-LM8_Holder_Lingth/2-LM6_Clr),LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
-			BarringHolder((-Top_Plate_Size/2+LM8_Holder_Lingth/2+LM6_Clr),LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
-			BarringHolder((Top_Plate_Size/2-LM8_Holder_Lingth/2-LM6_Clr),-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
-			BarringHolder((-Top_Plate_Size/2+LM8_Holder_Lingth/2+LM6_Clr),-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BearingHolder((Top_Plate_Size/2-h_length/2-LM6_Clr),Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder((-Top_Plate_Size/2+h_length/2+LM6_Clr),Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder(0,-Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
 		}
 		
 		else 
 		{
-			BarringHolder(0,LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
-			BarringHolder(0,-LM8_Holder_X,(Top_Plate_Thikness/2+(LM8_Holder_Hieght/2)));
+			BearingHolder(0,Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder(0,-Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
 		}
 	}
+}
 
 
 //spell check difference, cylinder, cube, translate, rotate, union

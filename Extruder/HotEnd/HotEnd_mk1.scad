@@ -1,5 +1,5 @@
-// WeePrusa 
-// HotEnd mk 1.0.0
+///////////////////////////////////////////////////////////////////////////////
+//// WeePrusa HotEnd mk 1.0.0
 // GNU GPL v3
 //
 // Maxumx
@@ -9,6 +9,7 @@
 //
 // This hotend is a micro print hot end, intended for use with 1.75mm filament
 // Material: High heat Stainless Steel or Inconel	
+///////////////////////////////////////////////////////////////////////////////
 
 // Metal colours
 al = [169/255, 171/255, 183/255];
