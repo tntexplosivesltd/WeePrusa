@@ -11,11 +11,12 @@
 // Material: ABS, PLA(recomended)
 ////////////////////////////////////////////////////////////////
 
+include<configuration.scad>
+
 $fn = 32;
 // Parameters:
 
 // Top Plate Options
-Top_Plate_Size = 70;		//70mm bed needed for lm6uu
 Top_Plate_Thickness = 4;
 
 //Print Table Mounting Holes
@@ -23,10 +24,9 @@ Hole_Size = 2.25;
 Hole_FromEdge = 5;
 
 // Bearing Holder dimesions
-LM6 = false;     // change to true for LM6UU bearings.
+
 LM6_Clr = 5;  // room top and bottom of the 4 mounts.
 
-Holder_X = 18;
 
 //some options
 ZipTie = true;
@@ -44,7 +44,6 @@ color("royalblue")
 
 module BearingHolder (X, Y, Z, bearing_length, bearing_diameter, holder_length, holder_width, holder_height, Rod_Size)
 {
-	echo("YAY",X, Y, Z, bearing_length, bearing_diameter, holder_length, holder_width, holder_height);
 	translate([X,Y,Z])
 	{
 		difference()
@@ -107,15 +106,15 @@ module carriage(b_length, b_dia, h_length, h_width, h_height, rod)
 		}
 		if(LM6)
 		{
-			BearingHolder((Top_Plate_Size/2-h_length/2-LM6_Clr),Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
-			BearingHolder((-Top_Plate_Size/2+h_length/2+LM6_Clr),Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
-			BearingHolder(0,-Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder((Top_Plate_Size/2-h_length/2-LM6_Clr),rail_width,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder((-Top_Plate_Size/2+h_length/2+LM6_Clr),rail_width,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder(0,-rail_width,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
 		}
 		
 		else 
 		{
-			BearingHolder(0,Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
-			BearingHolder(0,-Holder_X,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder(0,rail_width,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
+			BearingHolder(0,-rail_width,(Top_Plate_Thickness/2+(h_height/2)), b_length, b_dia, h_length, h_width, h_height, rod);
 		}
 	}
 }
