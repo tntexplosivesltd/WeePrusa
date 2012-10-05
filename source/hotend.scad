@@ -2,7 +2,7 @@
 //// WeePrusa HotEnd mk 1.0.0
 // GNU GPL v3
 //
-// Maxumx
+// Maxumx (Maxumx2002@yahoo.com)
 // Thomas Phillips (tntexplosivesltd@gmail.com)
 //
 // https://github.com/tntexplosivesltd/WeePrusa
@@ -19,13 +19,13 @@ stainless = [224/255, 223/255, 219/255];
 // Parameters
 	// Numerical
 	res_width = 5.52;		// Width of the heater resistor
-	therm_width = 2.5;	// Width of the thermistor
+	therm_width = 2.5;		// Width of the thermistor
 	therm_depth = 4;		// Depth of the thermistor hole
-	nozzle_width = 0.3;	// Extrusion hole width
+	nozzle_width = 0.3;		// Extrusion hole width
 
 	// Others
 	insert = true;		// change to false to remove the PTFE insert
-	block = true;		// Change to false to have a circular heat block
+	block = false;		// Change to false to have a circular heat block
 	nozzle = brass;		// Change to alu to have aluminium heatblock, or brass to have a brass one
 
 $fn = 32;
@@ -40,15 +40,15 @@ union()
 			color(stainless)
 			{
 				translate([0,0,10]) cylinder(h = 12, r = 6); //BottomGripper
-				translate([0,0,24]) cylinder(h = 3, r = 6);
-				translate([0,0,30]) cylinder(h = 3, r = 6);
-				translate([0,0,36]) cylinder(h = 3, r = 6);
-				translate([0,0,44]) cylinder(h = 3, r = 6);
+				translate([0,0,25]) cylinder(h = 3, r = 6);
+				translate([0,0,31]) cylinder(h = 3, r = 6);
+				translate([0,0,37]) cylinder(h = 3, r = 6);
+				translate([0,0,45]) cylinder(h = 3, r = 6);
 
 				translate([0,0,22]) cylinder(h = 3, r = 4);
-				translate([0,0,27]) cylinder(h = 3, r = 4);
-				translate([0,0,33]) cylinder(h = 3, r = 4);
-				translate([0,0,39]) cylinder(h = 5, r = 4);   //Top Gripper
+				translate([0,0,28]) cylinder(h = 3, r = 4);
+				translate([0,0,34]) cylinder(h = 3, r = 4);
+				translate([0,0,40]) cylinder(h = 5, r = 4);   //Top Gripper
 				//ToDo: Optional Bowden Connector top section
 			}
 
@@ -78,7 +78,7 @@ union()
 				rotate([90,0,0])translate([-7,5,-11.25])cylinder(h = 22.5, r = res_width/2, $fn=100);
 			
 				// Thermistor Hole (Epcos#B57560G0145) 2.3mm +-0.2r
-				rotate([90,0,0])translate([7,5,7-therm_depth])cylinder(h = therm_depth+1, r = therm_width/2, $fn=100);
+				rotate([90,0,0])translate([7,5,7-therm_depth])cylinder(h = therm_depth+3, r = therm_width/2, $fn=100);
 			}
 		}
 		if (!insert) color("silver") translate([0,0,45])cylinder(h = 6, r1 = 0, r2 = 6, $fn = 100);
