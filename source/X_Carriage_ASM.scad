@@ -13,7 +13,7 @@
 //Ends: made for a pressfit on the smooth rods, smooth rods may need chilled before insertion.
 // 		a set screw may be added on the top and bottom. if press fit is not enough.
 //
-//To do: Find a location to attach belt drive to carriage. side connectioins will cause to much deflection on the pullys.
+//To do: add holes in 'ends' to allow for eayer access to pully set screws. 
 ////////////////////////////////////////////////////////////////
 
 //Includes & Useings
@@ -107,16 +107,17 @@ module Carriage(ScrewSize)
 			difference() // belt mounts.
 			{
 				union() {
-					translate([1.5,-29.5,10.5])cube(size = [7,7,2], center = true);
-					translate([18.5,-29.5,10.5])cube(size = [7,7,2], center = true);
-					translate([1.5,-29.5,19.5])cube(size = [7,7,2], center = true);
-					translate([18.5,-29.5,19.5])cube(size = [7,7,2], center = true);
-					translate([10,-18,15])cube(size = [10,30,11], center = true);
+					translate([1.5,-25.5,10.5])cube(size = [7,7,2], center = true);
+					translate([18.5,-25.5,10.5])cube(size = [7,7,2], center = true);
+					translate([1.5,-25.5,19.5])cube(size = [7,7,2], center = true);
+					translate([18.5,-25.5,19.5])cube(size = [7,7,2], center = true);
+					
+					translate([10,-16,15])cube(size = [10,26,11], center = true);
 				}
-					translate([1.5,-29.5,10])cylinder(h=2.1, r = 1.5, center = true);
-					translate([18.5,-29.5,10])cylinder(h=2.1, r = 1.5, center = true);
-					translate([1.5,-29.5,20])cylinder(h=2.1, r = 1.5, center = true);
-					translate([18.5,-29.5,20])cylinder(h=2.1, r = 1.5, center = true);	
+					translate([1.5,-25.5,10.5])cylinder(h=2.1, r = 1.5, center = true);
+					translate([18.5,-25.5,10.5])cylinder(h=2.1, r = 1.5, center = true);
+					translate([1.5,-25.5,19.5])cylinder(h=2.1, r = 1.5, center = true);
+					translate([18.5,-25.5,19.5])cylinder(h=2.1, r = 1.5, center = true);	
 				
 			}
 
@@ -182,17 +183,18 @@ module Motor_End(smooth_diameter, nema8_torque)
 		rotate([0,90,0])translate([-25.5,0,0])cylinder(h = 41, r = 3, center = true);
 		translate([10,0,4])cube(size = [10,16.5,6.25], center = true);
 		translate([10,0,20])cube(size = [10,16.5,6.25], center = true);
-		translate([-8,1.0,12])cube(size = [20.5,14.1,20.5], center = true);
-		rotate([90,0,0])translate([-8,12,7])cylinder(h = 2.1, r = 2.5, center = true);
+		translate([-8,9.0,12])cube(size = [20.5,14.1,20.5], center = true);
+		translate([-8,-4.0,12])cube(size = [20.5,8.1,20.5], center = true);
+		rotate([90,0,0])translate([-8,12,3])cylinder(h = 10.1, r = 2.5, center = true);
 
-		rotate([90,0,0])translate([-15.7,19.7,7])cylinder(h = 2.1, r = 1, center = true);
-		rotate([90,0,0])translate([-0.3,19.7,7])cylinder(h = 2.1, r = 1, center = true);
-		rotate([90,0,0])translate([-15.7,4.3,7])cylinder(h = 2.1, r = 1, center = true);
-		rotate([90,0,0])translate([-0.3,4.3,7])cylinder(h = 2.1, r = 1, center = true);
+		rotate([90,0,0])translate([-15.7,19.7,3])cylinder(h = 10.1, r = 1, center = true);
+		rotate([90,0,0])translate([-0.3,19.7,3])cylinder(h = 10.1, r = 1, center = true);
+		rotate([90,0,0])translate([-15.7,4.3,3])cylinder(h = 10.1, r = 1, center = true);
+		rotate([90,0,0])translate([-0.3,4.3,3])cylinder(h = 10.1, r = 1, center = true);
 		
 	}
-	translate([-18.15,-5,1.85])nema8(4);
-	rotate([90,0,0])translate([-8,12,11.25])GT2Pully();
+	translate([-18.15,3,1.85])nema8(4);
+	rotate([90,0,0])translate([-8,12,6.25])GT2Pully();
 }
 
 module Idle_End(smooth_diameter, nema8_torque)
@@ -216,11 +218,12 @@ module Idle_End(smooth_diameter, nema8_torque)
 		translate([-10,0,20])cube(size = [10,16.5,6.25], center = true);
 
 		rotate([90,0,0])translate([8,12,0])cylinder(h = 20, r = 2.5, center = true);
+		#rotate([90,0,0])translate([8,12,2.01])cylinder(h = 6, r = 7.6 );
 		
 
 		
 	}
-	rotate([90,0,0])translate([8,12,11.25])GT2Pully();
+	rotate([90,0,0])translate([8,12,6.25])GT2Pully();
 }
 
 
